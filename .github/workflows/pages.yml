@@ -1,0 +1,53 @@
+# Publica el informe en GitHub Pages.
+#
+# No compila nada: el sitio ya viene generado en sitio/ y versionado en el
+# repositorio. Regenerarlo aquí exigiría instalar Python con scikit-fmm y numba
+# en el servidor para producir un resultado que ya está calculado y que es
+# determinista — no ganaría nada y sumaría una forma de fallar.
+#
+# Para regenerarlo, en la máquina de trabajo:
+#     py -3.12 experimentos/exportar_sitio.py
+# y se sube el resultado como cualquier otro cambio.
+name: Publicar el informe
+
+on:
+  push:
+    branches: [main]
+    paths: ["sitio/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:          # también se puede lanzar a mano
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si llegan dos cambios seguidos, se publica el último y se cancela el anterior
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar que el sitio está completo
+        # Si falta un archivo, mejor fallar aquí que publicar una página rota
+        run: |
+          set -e
+          for f in sitio/index.html sitio/datos/catalogo.json \
+                   sitio/datos/escenarios.json sitio/.nojekyll; do
+            test -f "$f" || { echo "FALTA $f — corre experimentos/exportar_sitio.py"; exit 1; }
+          done
+          echo "sitio/: $(find sitio -type f | wc -l) archivos, $(du -sh sitio | cut -f1)"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: sitio
+      - id: despliegue
+        uses: actions/deploy-pages@v4

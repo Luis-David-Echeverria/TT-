@@ -1,0 +1,15 @@
+# Normaliza finales de linea: el repo guarda LF y cada maquina usa lo suyo.
+# Sin esto, mover el proyecto entre Windows y Linux ensucia los diffs.
+* text=auto eol=lf
+
+# Binarios: que git no los toque
+*.db      binary
+*.png     binary
+*.jpg     binary
+*.gif     binary
+*.ttf     binary
+*.woff    binary
+*.woff2   binary
+
+# La interfaz compilada no se revisa a mano: que no infle los diffs
+web/assets/**  linguist-generated=true

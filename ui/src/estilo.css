@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lienzo:   #05070f;
+  --color-fondo:    #0a0d14;
+  --color-panel:    #11151e;
+  --color-panel2:   #161b26;
+  --color-linea:    #232b39;
+  --color-tinta:    #e8e4db;
+  --color-tenue:    #8a93a3;
+  --color-ambar:    #e0a458;
+  --color-verde:    #5dcaa5;
+  --color-rojo:     #e2564f;
+}
+
+html, body, #raiz { height: 100%; }
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  color: var(--color-tinta);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* controles nativos, tematizados */
+input[type="range"] { accent-color: var(--color-ambar); }
+input[type="checkbox"] { accent-color: var(--color-ambar); }
+input[type="number"], select {
+  background: var(--color-panel2);
+  border: 1px solid var(--color-linea);
+  border-radius: 6px;
+  color: var(--color-tinta);
+  padding: 5px 8px;
+  font-size: 12px;
+  width: 100%;
+}
+input[type="number"]:focus, select:focus {
+  outline: none; border-color: #3d4757;
+}
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-linea); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #33405480; }
+
+@keyframes giro { to { transform: rotate(360deg); } }
+.giro { animation: giro .7s linear infinite; }

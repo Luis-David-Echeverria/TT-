@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node: se reinstala con npm install
+ui/node_modules/
+
+# Salidas temporales de figuras y cuadernos
+salidas/
+
+# NO se ignora sitio/: es lo que GitHub Pages publica. Se regenera con
+# experimentos/exportar_sitio.py, pero tiene que estar versionado para que
+# Pages tenga algo que servir sin correr Python en el servidor.
+
+# NO se ignoran:
+#   web/     -> la interfaz compilada, para poder usarla sin Node
+#   datos/   -> los resultados del experimento son parte del repositorio

@@ -1,0 +1,14 @@
+# Trabajo Terminal — distribucion de areas de servicio en eventos masivos
+# Python 3.12
+
+numpy>=2.0
+scipy>=1.14          # linprog (HiGHS) para validar el transporte, ndimage, stats
+scikit-fmm>=2024.5   # Fast Marching Method: resuelve la ecuacion Eikonal
+numba>=0.60          # compila el paso de Godunov (2.4x, exacto a 4e-14)
+
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.9
+
+# Solo para las figuras de la tesis y los cuadernos; la herramienta no los usa
+matplotlib>=3.9
