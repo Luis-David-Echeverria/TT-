@@ -36,43 +36,26 @@ jobs:
       - uses: actions/checkout@v4
 
       # ------------------------------------------------------------------
-      # Antes de intentar publicar, comprobar que se PUEDE. Sin esto, el
-      # fallo típico es un "Not Found" del paso de despliegue que no dice
-      # nada sobre la causa real, que casi siempre es una de dos cosas:
-      # el repositorio es privado, o Pages no está puesto en "GitHub Actions".
+      # Solo se comprueba lo que de verdad impide publicar y no se puede
+      # arreglar desde aquí: que el repositorio sea privado.
+      #
+      # NO se comprueba que Pages esté "habilitado". La primera versión lo
+      # hacía y bloqueaba el despliegue en el único momento en que había que
+      # dejarlo pasar: la API /pages devuelve 404 hasta que existe un
+      # despliegue exitoso, y quien crea ese primer despliegue es justamente
+      # el paso configure-pages de más abajo. Era un círculo vicioso —
+      # exigir el resultado antes de permitir la causa.
       # ------------------------------------------------------------------
-      - name: Comprobar que Pages está habilitado
+      - name: Comprobar que el repositorio es público
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set +e
           visibilidad=$(gh api "repos/${GITHUB_REPOSITORY}" --jq .visibility)
-          plan=$(gh api "repos/${GITHUB_REPOSITORY}" --jq '.owner.type')
-          pages=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq .build_type 2>/dev/null)
-          codigo=$?
-          set -e
-
+          tipo=$(gh api "repos/${GITHUB_REPOSITORY}" --jq .owner.type)
           echo "repositorio: $visibilidad"
-          echo "origen de Pages: ${pages:-(sin configurar)}"
-
-          if [ "$visibilidad" != "public" ] && [ "$plan" = "User" ]; then
+          if [ "$visibilidad" != "public" ] && [ "$tipo" = "User" ]; then
             echo "::error::El repositorio es $visibilidad. GitHub Pages solo publica repositorios PÚBLICOS en cuentas gratuitas."
-            echo ""
-            echo "Para arreglarlo:  Settings -> General -> Danger Zone -> Change visibility -> Public"
-            exit 1
-          fi
-
-          if [ $codigo -ne 0 ] || [ -z "$pages" ]; then
-            echo "::error::Pages no está habilitado en este repositorio."
-            echo ""
-            echo "Para arreglarlo:  Settings -> Pages -> Build and deployment -> Source: GitHub Actions"
-            exit 1
-          fi
-
-          if [ "$pages" != "workflow" ]; then
-            echo "::error::Pages está publicando desde una rama ($pages), no desde Actions, así que este workflow no puede desplegar."
-            echo ""
-            echo "Para arreglarlo:  Settings -> Pages -> Source: GitHub Actions"
+            echo "Para arreglarlo: Settings -> General -> Danger Zone -> Change visibility -> Public"
             exit 1
           fi
 
@@ -87,6 +70,9 @@ jobs:
           echo "sitio/: $(find sitio -type f | wc -l) archivos, $(du -sh sitio | cut -f1)"
 
       - uses: actions/configure-pages@v5
+        with:
+          # si Pages todavia no existe, lo habilita en vez de fallar
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: sitio
