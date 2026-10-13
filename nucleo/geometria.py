@@ -130,7 +130,13 @@ def zona_ocupable(rec, layout=None):
     """
     libre = rec.libre(layout)
     salidas = rec.mascara_salidas()
-    r = max(1, int(round((ANCHO_LIBRE_MIN / 2) / rec.h)))
+    # Un pasillo de n celdas sobrevive a la erosion de radio r si n >= 2r + 1.
+    # Para exigir w_min hay que pedir 2r + 1 >= w_min/h celdas: r = n_min // 2.
+    # Antes era round(w_min / 2 / h), que con h = 1 da r = 2 y en la practica
+    # exigia pasillos de 5 m en vez de 3 m. Con n_min par la erosion no puede
+    # ser exacta y se redondea hacia lo estricto (una celda de mas).
+    n_min = int(np.ceil(ANCHO_LIBRE_MIN / rec.h - 1e-9))
+    r = max(1, n_min // 2)
     st = _disco(r)
 
     erod = ndimage.binary_erosion(libre, structure=st)
