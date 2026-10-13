@@ -87,25 +87,29 @@ CAPA_LIMITE = reg(
 ANCHO_LIBRE_MIN = reg(
     "ANCHO_LIBRE_MIN", "w_min", 3.0, "m", "PENDIENTE",
     "Reglamento de Construcciones CDMX + NTC para el Proyecto Arquitectonico",
-    "Ancho libre minimo de circulacion. VALOR PROVISIONAL. Hay que sacarlo del "
-    "articulo y citar tabla y fecha de publicacion.")
+    "Ancho libre minimo de circulacion. VALOR PROVISIONAL. La NOM-002-STPS-2010 "
+    "(nums. 7.15 b y 7.16 f) obliga a tener rutas y salidas libres de "
+    "obstaculos pero NO fija un ancho (verificado contra el texto del DOF el "
+    "13-oct-2026). La cifra tiene que salir de las NTC para el Proyecto "
+    "Arquitectonico: citar tabla y fecha de publicacion.")
 
 DIST_MAX_SALIDA = reg(
-    "DIST_MAX_SALIDA", "d_max", 40.0, "m", "PENDIENTE",
-    "RCDF + NTC / reglamento contra incendios aplicable",
-    "Distancia maxima de recorrido desde cualquier punto ocupable hasta una "
-    "salida. VALOR PROVISIONAL.")
+    "DIST_MAX_SALIDA", "d_max", 40.0, "m", "normativo",
+    "NOM-002-STPS-2010, num. 7.15 d)",
+    "La norma mide los 40 m desde el punto mas alejado hasta CUALQUIER punto de "
+    "la ruta de evacuacion; aqui se mide hasta la salida, que es mas estricto. "
+    "Si se excede, la norma pide evacuar en tres minutos (T_EVAC_MAX). Se "
+    "verifica por recinto y no por distribucion: en el recinto de prueba el "
+    "piso vacio ya pasa de 40 m.")
 
 T_EVAC_MAX = reg(
-    "T_EVAC_MAX", "t_lim", 600.0, "s", "PENDIENTE",
-    "Programa Especial de Proteccion Civil / criterio del proyecto",
-    "Tiempo maximo admisible de desalojo (10 min). VALOR PROVISIONAL. "
-    "OJO con la cifra de 40 s que circula: la cota fisica es "
-    "t_min = N/(J_s x ancho_util) y ninguna distribucion la baja. Para 5 000 "
-    "personas en 40 s harian falta 95 m de salida util, y para 20 000 harian "
-    "falta 379 m -- mas que el perimetro completo de una nave de 100x60 m. "
-    "Esos 40 s no pueden ser desalojo total de un evento masivo; verificar a "
-    "que se refiere exactamente la fuente.")
+    "T_EVAC_MAX", "t_lim", 180.0, "s", "normativo",
+    "NOM-002-STPS-2010, num. 7.15 d)",
+    "Tiempo maximo de evacuacion de los ocupantes a un lugar seguro cuando el "
+    "recorrido pasa de 40 m: tres minutos. Antes figuraba 600 s sin fuente. "
+    "La cota fisica t_min = N/(J_s x ancho_util) sigue mandando: si la puerta "
+    "no da para N personas en 180 s, ninguna distribucion lo arregla, y eso es "
+    "un problema del recinto, no del layout.")
 
 RHO_DISENO = reg(
     "RHO_DISENO", "ρ_d", 3.5, "pers/m²", "calibrar",
