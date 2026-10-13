@@ -95,7 +95,7 @@ export function SecPreparacion({ cfg, catalogo, recinto, layout }) {
       </P>
       <Ec t={String.raw`\Omega = \Big[\big(L \ominus B_{r}\big)\big|_{\text{conexo a salidas}}\Big]
             \oplus B_{r} \;\cap\; L,
-            \qquad r = \frac{w_{\min}}{2h} = ${Math.max(1, Math.round((v.ANCHO_LIBRE_MIN ?? 3) / 2))}\ \text{celdas}`} />
+            \qquad r = \left\lfloor \tfrac{1}{2}\left\lceil \tfrac{w_{\min}}{h} \right\rceil \right\rfloor = ${Math.max(1, Math.floor(Math.ceil((v.ANCHO_LIBRE_MIN ?? 3) - 1e-9) / 2))}\ \text{celdas}`} />
       <Simbolos ks={["Omega", "L", "Br", "w_min", "h"]} />
       <P>
         En palabras: se encoge el piso libre por medio ancho de pasillo, se

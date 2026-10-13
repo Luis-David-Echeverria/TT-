@@ -701,7 +701,7 @@ export default function Resultados({ catalogo, lut }) {
 
           {/* ------------------------------------------------ 11 */}
           {frente && frente.frente && (
-            <Sec n="11." titulo="Resultado 4 — el frente real, y por qué no basta un barrido de pesos">
+            <Sec n="11." titulo="Resultado 4 — el frente ε-restringido, y lo que todavía no permite afirmar">
               <P>
                 Las secciones anteriores miran una muestra <b>al azar</b>, y una
                 muestra al azar nunca llega a la frontera: se queda en la región
@@ -806,26 +806,18 @@ export default function Resultados({ catalogo, lut }) {
                 </table>
               </div>
 
-              <Nota tono={frente.convexo ? "info" : "alerta"}>
-                {frente.convexo ? (
-                  <>
-                    <b>El frente salió convexo.</b> Un barrido de pesos lo recorrería
-                    entero y NSGA-II no se justifica por este argumento.
-                  </>
-                ) : (
-                  <>
-                    <b>El frente es NO CONVEXO.</b>{" "}
-                    {frente.frente.filter((f) => !f.alcanzable_por_pesos).length} de{" "}
-                    {frente.frente.length} soluciones son inalcanzables con{" "}
-                    <em>cualquier</em> peso. Minimizar{" "}
-                    <Ei t="w\,f_1 + (1-w)\,t_{\text{evac}}" /> equivale a deslizar
-                    una recta hasta que toca el conjunto factible, y una recta solo
-                    puede tocar el casco convexo: si el frente tiene una hendidura,
-                    la recta pasa por encima. Esos puntos <b>no salen peores — el
-                    método no puede verlos</b> (Das &amp; Dennis, 1997). Por eso hace
-                    falta ordenar por dominancia y no por un escalar.
-                  </>
-                )}
+              <Nota tono="alerta">
+                <b>Con estos datos no se puede afirmar la forma del frente.</b>{" "}
+                Los {frente.frente.length} puntos de este barrido ε quedan
+                dominados por soluciones que encontró el barrido de pesos (§12):
+                con su presupuesto de generaciones, el ε-restringido no llegó al
+                frente. La marca «inalcanzable por pesos» se calculó contra estos
+                mismos puntos, así que <b>no prueba que el frente sea no
+                convexo</b>. Lo que sí muestra es que hay compromiso: bajar{" "}
+                <Ei t="f_1" /> cuesta tiempo de evacuación. Para medir la forma
+                del frente hace falta repetir el ε-restringido con más
+                generaciones, o compararlo contra el frente de NSGA-II
+                (revisión del 13-oct-2026).
               </Nota>
 
               <h3 className="mb-1 mt-5 text-[12.5px] font-semibold">
