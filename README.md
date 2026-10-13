@@ -21,6 +21,22 @@ castiga solo, sin necesidad de una regla que lo prohíba.
 
 ---
 
+## Revisión de seguimiento — 13 de octubre de 2026
+
+Evidencias del periodo **29 de septiembre – 12 de octubre** del cronograma
+(`entregas/Cronograma_TT_2027-A126_FINAL.docx`). El índice completo, con lo que se
+corrigió en esta revisión, está en **[docs/SEGUIMIENTO.md](docs/SEGUIMIENTO.md)**.
+
+| Actividad | Evidencia |
+|---|---|
+| Parámetros con su fuente normativa | [docs/PARAMETROS-NORMATIVOS.md](docs/PARAMETROS-NORMATIVOS.md) · PDF en `entregas/evidencias/` |
+| Diseño del algoritmo: representación, operadores y restricciones | [docs/DISENO-ALGORITMO.md](docs/DISENO-ALGORITMO.md) · PDF en `entregas/evidencias/` |
+| Acoplamiento del evaluador y costo por evaluación | [docs/ACOPLAMIENTO-Y-COSTO.md](docs/ACOPLAMIENTO-Y-COSTO.md) · [experimentos/costo_evaluacion.py](experimentos/costo_evaluacion.py) · PDF en `entregas/evidencias/` |
+| Reporte técnico | [docs/REPORTE-TECNICO.md](docs/REPORTE-TECNICO.md) |
+| Cuadernos que explican cada parte del modelo | [cuadernos/](cuadernos/) |
+
+---
+
 ## La pregunta de esta etapa, y su respuesta
 
 > ¿Acercar a la gente a los servicios pelea con evacuar rápido? Es decir: ¿es
@@ -51,27 +67,21 @@ ese +0.014 es cero con ruido, no «correlación débil positiva».
 > una función predice a la otra y basta optimizar una. No ocurrió en ninguno de
 > los 6 escenarios del barrido.
 
-**3. Existe un frente de Pareto real.** La correlación sobre muestras aleatorias
-no puede verlo —una muestra al azar nunca llega a la frontera— así que se trazó
-con un **barrido ε-restringido** (Haimes et al., 1971): para cada tope τ,
-minimizar f₁ sujeto a que el tiempo no pase de τ.
+**3. Hay compromiso entre las dos.** La correlación sobre muestras aleatorias no
+puede verlo —una muestra al azar nunca llega a la frontera— así que se buscó la
+frontera optimizando. El barrido de pesos lo muestra directo: optimizando solo el
+tiempo, la accesibilidad se va a 28.57 m; optimizando solo la accesibilidad, el
+tiempo sube a 77.4 s (tabla de abajo).
 
-| f₁ (m) | t evacuación (s) | ¿la alcanza un barrido de pesos? |
-|---|---|---|
-| 16.882 | 80.4 | sí |
-| 16.989 | 78.6 | sí |
-| **18.158** | **75.9** | **NO — inalcanzable** |
-| **19.283** | **73.5** | **NO — inalcanzable** |
-| 19.419 | 71.7 | sí |
-| 21.149 | 69.6 | sí |
-| 25.176 | 68.1 | sí |
-
-**4. El frente es no convexo**, y eso decide el método. Minimizar
-`w·f₁ + (1−w)·f₂` equivale a deslizar una recta hasta que toca el conjunto
-factible, y una recta solo puede tocar el casco convexo: si el frente tiene una
-hendidura, la recta pasa por encima. Esos dos puntos **no salen peores — el
-método no puede verlos** (Das & Dennis, 1997). Por eso hace falta ordenar por
-dominancia y no por un escalar.
+**4. La forma del frente todavía no se puede afirmar.** Una versión anterior de
+este README decía que el frente era **no convexo**, con base en un barrido
+ε-restringido (Haimes et al., 1971) en el que dos puntos parecían inalcanzables
+con cualquier peso. Al revisarlo el 13 de octubre de 2026: **los 7 puntos de ese
+barrido ε quedan dominados** por soluciones que encontró el barrido de pesos. Con
+su presupuesto, el ε-restringido no llegó al frente, así que esa marca de
+«inalcanzables» no prueba nada. La forma del frente se medirá con NSGA-II, que es
+el algoritmo elegido de todos modos: ordena por dominancia y no depende de que el
+frente sea convexo.
 
 ### Lo que dijo el barrido de pesos
 
