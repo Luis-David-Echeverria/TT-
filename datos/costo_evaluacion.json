@@ -1,0 +1,14 @@
+{
+ "fecha": "2026-10-13",
+ "n": 96,
+ "aforo": 2000,
+ "procesos": 12,
+ "ms_por_pieza": {
+  "ms_geo": 2.4018656240514247,
+  "ms_f1": 52.03116041775502,
+  "ms_f2": 133.68985937601488
+ },
+ "ms_serie": 188.14719895848006,
+ "ms_paralelo": 34.40682708333043,
+ "maquina": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD"
+}
