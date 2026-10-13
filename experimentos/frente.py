@@ -119,7 +119,15 @@ def cruzar(a, b, rng):
     Se hereda (x, y, rot) como bloque. Promediar coordenadas entre dos layouts
     distintos no produce un hijo intermedio -- produce uno que no se parece a
     ninguno y que casi siempre tiene traslapes.
+
+    Los modulos se emparejan POR TIPO, no por su posicion en la lista: el
+    muestreo baraja el orden de colocacion en cada layout, asi que el i-esimo de
+    un padre y el del otro pueden ser de tipos distintos. Emparejando por
+    posicion salian hijos con 4 comidas y 1 sanitario, y f1 ni siquiera veia
+    los tipos que desaparecian (corregido el 13-oct-2026).
     """
+    a = sorted(a, key=lambda c: c.tipo)
+    b = sorted(b, key=lambda c: c.tipo)
     m = rng.random(len(a)) < 0.5
     return [Colocacion(c.tipo, c.x, c.y, c.rot)
             for c in (a[i] if m[i] else b[i] for i in range(len(a)))]

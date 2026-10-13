@@ -1,5 +1,17 @@
 # El optimizador: qué sí, qué no, y por qué
 
+> **Aviso del 13 de octubre de 2026.** Las corridas de NSGA-II de las secciones 0,
+> 1 y 2 se hicieron con un cruce que emparejaba los módulos por su posición en la
+> lista y no por tipo; como el muestreo baraja el orden de los tipos, había hijos
+> con una composición distinta (por ejemplo 4 comidas y 1 sanitario). Eso infla
+> f₁: los tipos que desaparecen ni siquiera entran en su promedio. El cruce ya
+> está corregido en `frente.py`, pero **los números de esas secciones (f₁ = 8.35 m,
+> −65 %, el frente f₁–t_des y la comparación de pares de objetivos) hay que volver
+> a correrlos** antes de usarlos. La sección 3 (costo por evaluación) no depende
+> del cruce y sigue valiendo; hay una medición actualizada en
+> `docs/ACOPLAMIENTO-Y-COSTO.md`. Lo publicado en el sitio no sale de estas
+> corridas.
+
 Investigación del 2026-09-23, con todo medido sobre el recinto de ejemplo
 (100×60 m, 4 salidas, 2 obstáculos fijos, 9 módulos, aforo 2 000, reparto
 uniforme). Reproducible con:
