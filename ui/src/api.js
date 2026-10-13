@@ -16,8 +16,15 @@
  * Lo que se pierde: solo se pueden animar y desglosar los layouts que se
  * precalcularon. Simular uno cualquiera necesita el modelo corriendo, y el
  * modelo no cabe en el navegador. La interfaz avisa cuando un punto no tiene
- * detalle en vez de fallar en silencio. */
-export const ESTATICO = import.meta.env.VITE_ESTATICO === "1";
+ * detalle en vez de fallar en silencio.
+ *
+ * El modo sale de `vite build --mode sitio` (npm run build:sitio), no de una
+ * variable de entorno aparte: antes dependia de VITE_ESTATICO=1, y compilar
+ * con `npm run build:sitio` a secas -como dice el README- producia un sitio
+ * que buscaba /api/catalogo en GitHub Pages y se quedaba en "No se pudo
+ * contactar la API". VITE_ESTATICO se sigue aceptando por compatibilidad. */
+export const ESTATICO =
+  import.meta.env.MODE === "sitio" || import.meta.env.VITE_ESTATICO === "1";
 
 /** Traduce una ruta de la API al archivo que la contiene. */
 function archivoDe(ruta) {
